@@ -14,19 +14,17 @@
             <div class="border p-3">
                 @*<div asp-validation-summary="ModelOnly"></div>*@
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="Name" class="form-control border-0 shadow" />
+                    <input asp-for="Name" disabled ="disabled" class="form-control border-0 shadow" />
                     <label asp-for="Name" class="ms-2"></label>
-                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="DisplayOrder" class="form-control border-0 shadow" />
+                    <input asp-for="DisplayOrder" disabled="disabled" class="form-control border-0 shadow" />
                     <label asp-for="DisplayOrder" class="ms-2"></label>
-                    <span asp-validation-for="DisplayOrder" class="text-danger"></span>
                 </div>
 
                 <div class="row pt-2">
                     <div class="col-6 col-md-3">
-                        <button type="submit" class="btn btn-primary form-control">Update</button>
+                        <button type="submit" class="btn btn-danger form-control">Delete</button>
                     </div>
                     <div class="col-6 col-md-3">
                         <a asp-controller="Category" asp-action="Index" class="btn btn-outline-primary border  form-control">
@@ -40,12 +38,3 @@
         </form>
     </div>
 </div>
-
-
-
-
-@section Scripts{
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
-}

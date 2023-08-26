@@ -38,6 +38,7 @@ namespace BookMergeStore.Controllers
             {
                 _db.Categories.Add(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Created Successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -56,11 +57,8 @@ namespace BookMergeStore.Controllers
             {
                 return NotFound();
             }
-
-            List<Category> model = _db.Categories.ToList();
-            ViewData["id"] = id;
                 
-            return View(model);
+            return View(category);
         }
 
         [HttpPost]
@@ -70,10 +68,43 @@ namespace BookMergeStore.Controllers
             {
                 _db.Categories.Update(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Edited Successfully";
                 return RedirectToAction("Index");
             }
             return View();
 
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id < 0)
+            {
+                return NotFound();
+            }
+
+            Category? category = _db.Categories.FirstOrDefault(c => c.Id == id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public IActionResult DeletePost(int? id)
+        {
+            Category? category = _db.Categories.FirstOrDefault(c => c.Id == id);
+
+            if (category != null)
+            {
+                _db.Categories.Remove(category);
+                _db.SaveChanges();
+                TempData["success"] = "Deleted Successfully";
+            }
+            return RedirectToAction("Index");
         }
 
     }
