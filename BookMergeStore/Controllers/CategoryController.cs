@@ -1,4 +1,6 @@
-﻿using BookMergeStore.Data;
+﻿using BookMergeStore.DAL.Data;
+using BookMergeStore.DAL.IRepository;
+using BookMergeStore.DAL.Repository;
 using BookMergeStore.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,16 +9,16 @@ namespace BookMergeStore.Controllers
     public class CategoryController : Controller
     {
 
-        private readonly ApplicationDbContext _db;
+        private readonly IUnitOfWork _IUnitOfWork;
 
-        public CategoryController(ApplicationDbContext db)
+        public CategoryController(IUnitOfWork IUnitOfWork)
         {
-            _db = db;
+            _IUnitOfWork = IUnitOfWork;
         }
 
         public IActionResult Index()
         {
-            List<Category> model = _db.Categories.ToList();
+            var model = _IUnitOfWork.Category.GetAll();
 
             return View(model);
         }
@@ -36,8 +38,8 @@ namespace BookMergeStore.Controllers
 
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
-                _db.SaveChanges();
+                _IUnitOfWork.Category.Create(obj);
+                _IUnitOfWork.Commit();
                 TempData["success"] = "Created Successfully";
                 return RedirectToAction("Index");
             }
@@ -51,7 +53,7 @@ namespace BookMergeStore.Controllers
                 return NotFound();
             }
 
-            Category? category = _db.Categories.FirstOrDefault(c => c.Id == id);
+            Category? category = _IUnitOfWork.Category.Get(c => c.Id == id);
 
             if(category == null) 
             {
@@ -66,8 +68,8 @@ namespace BookMergeStore.Controllers
         {      
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
+                _IUnitOfWork.Category.Update(obj);
+                _IUnitOfWork.Commit();
                 TempData["success"] = "Edited Successfully";
                 return RedirectToAction("Index");
             }
@@ -82,7 +84,7 @@ namespace BookMergeStore.Controllers
                 return NotFound();
             }
 
-            Category? category = _db.Categories.FirstOrDefault(c => c.Id == id);
+            Category? category = _IUnitOfWork.Category.Get(c => c.Id == id);
 
             if (category == null)
             {
@@ -96,12 +98,12 @@ namespace BookMergeStore.Controllers
         [ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Category? category = _db.Categories.FirstOrDefault(c => c.Id == id);
+            Category? category = _IUnitOfWork.Category.Get(c => c.Id == id); 
 
             if (category != null)
             {
-                _db.Categories.Remove(category);
-                _db.SaveChanges();
+                _IUnitOfWork.Category.Remove(category);
+                _IUnitOfWork.Commit();
                 TempData["success"] = "Deleted Successfully";
             }
             return RedirectToAction("Index");

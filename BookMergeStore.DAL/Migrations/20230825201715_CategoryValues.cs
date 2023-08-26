@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace BookMergeStore.Migrations
+namespace BookMergeStore.DAL.Migrations
 {
     /// <inheritdoc />
     public partial class CategoryValues : Migration

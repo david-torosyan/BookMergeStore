@@ -1,7 +1,7 @@
 ﻿using BookMergeStore.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookMergeStore.Data
+namespace BookMergeStore.DAL.Data
 {
     public class ApplicationDbContext : DbContext
     {
