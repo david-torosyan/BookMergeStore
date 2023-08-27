@@ -12,11 +12,13 @@ namespace BookMergeStore.DAL.Repository
     {
         private ApplicationDbContext _db;
         public ICategoryRepository Category { get ; set ; }
+        public IProductReopsitory Product { get ; set ; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
                 _db = db;
                 Category = new CategoryRepository(db);
+                Product = new ProductRepository(db);
         }
 
         public void Commit()
