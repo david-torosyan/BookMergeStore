@@ -2,11 +2,14 @@
 using BookMergeStore.DAL.IRepository;
 using BookMergeStore.DAL.Repository;
 using BookMergeStore.Models;
+using BookMergeStore.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookMergeStore.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CategoryController : Controller
     {
 

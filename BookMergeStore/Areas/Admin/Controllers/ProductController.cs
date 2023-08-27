@@ -2,12 +2,15 @@
 using BookMergeStore.DAL.Repository;
 using BookMergeStore.Models;
 using BookMergeStore.Models.ViewModels;
+using BookMergeStore.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookMergeStore.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
 
