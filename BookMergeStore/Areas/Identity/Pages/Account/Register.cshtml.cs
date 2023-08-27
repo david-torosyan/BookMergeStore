@@ -36,8 +36,8 @@ namespace BookMergeStore.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
-            _userManager = userManager;
             _roleManager = roleManager;
+            _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
@@ -98,6 +98,7 @@ namespace BookMergeStore.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+
             public string? Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
@@ -108,11 +109,8 @@ namespace BookMergeStore.Areas.Identity.Pages.Account
             public string? City { get; set; }
             public string? State { get; set; }
             public string? PostalCode { get; set; }
-            public string? PhoneNumber
-            {
-                get; set;
+            public string? PhoneNumber { get; set; }
 
-            }
         }
 
 
@@ -121,9 +119,9 @@ namespace BookMergeStore.Areas.Identity.Pages.Account
             if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Company)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(SD.Role_Company)).GetAwaiter().GetResult();
             }
 
             Input = new()
@@ -149,13 +147,19 @@ namespace BookMergeStore.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.StreetAddress = Input.StreetAddress;
+                user.City = Input.City;
+                user.Name = Input.Name;
+                user.State = Input.State;
+                user.PostalCode = Input.PostalCode;
+                user.PhoneNumber = Input.PhoneNumber;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if(!string.IsNullOrEmpty(Input.Role)) 
+                    if (!String.IsNullOrEmpty(Input.Role))
                     {
                         await _userManager.AddToRoleAsync(user, Input.Role);
                     }
