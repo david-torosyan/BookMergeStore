@@ -8,3 +8,4 @@ Clean Architecture
 Integrate Identity Framework and learn how to add more fields to Users
 Integrate Entity Framework along with code first migrations
 Authentication and Authorization in ASP.NET Core
+
